@@ -1,96 +1,157 @@
-<h3 class="title">Administrador de empleados</h3>
-<div class="row">
-  <!-- COLUMNA DE LA IZQUIERDA (TABLA)-->
-  <div class="col container-fluid">
-    <table class="table text-center align-middle">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Edad</th>
-        </tr>
-      </thead>
+<div class="content">
+  <h3 class="title">Administrador de empleados</h3>
 
-      <tbody>
-        <tr *ngFor="let empleado of catalogoDeEmpleados; let i = index">
-          <td>
-            <ngb-highlight
-              class="text-gray"
-              [result]="factura.descripcion"
-            ></ngb-highlight>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div>
+    <input
+      type="text"
+      class="form-control search search-longer"
+      placeholder="Buscar..."
+      [(ngModel)]="busqueda"
+    />
   </div>
-
-  <!-- COLUMNA DE LA DERECHA (PARA LOS DETALLES) -->
-  <div class="col-lg-4 columna-derecha" *ngIf="mostrarColumnaDerecha">
-    <form
-      autocomplete="off"
-      (ngSubmit)="envioFormulario()"
-      [formGroup]="empleadoForm"
-    >
-      <p class="titulo-formulario m-0">Agregar empleado</p>
-      <span class="texto-descriptivo"
-        >Ingresa los datos del trabajor en el siguiente formulario</span
+  <div class="row mt-3">
+    <!-- COLUMNA DE LA IZQUIERDA (TABLA)-->
+    <div class="col container-fluid">
+      <ng-container
+        *ngIf="
+          (catalogoDeEmpleados | search : busqueda).length >= 1;
+          else noRegistros
+        "
       >
+        <table class="table text-center align-middle">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Edad</th>
+            </tr>
+          </thead>
 
-      <div class="grupo-formulario">
-        <p class="subtitulo-seccion">DATOS GENERALES</p>
+          <tbody>
+            <tr
+              *ngFor="
+                let empleado of catalogoDeEmpleados | search : busqueda;
+                let i = index
+              "
+            >
+              <!-- ID -->
+              <td>
+                <ngb-highlight
+                  class="text-gray"
+                  [result]="empleado.id"
+                  [term]="busqueda"
+                ></ngb-highlight>
+              </td>
 
-        <div class="grupo-input">
-          <label for="nombre" class="col-4">Nombre</label>
-          <input
-            type="text"
-            class="col-8"
-            placeholder="Ingrese nombre"
-            id="nombre"
-            formControlName="nombre"
-          />
-        </div>
+              <!-- Nombre -->
 
-        <div class="grupo-input">
-          <label for="calendario " class="col-4">Fecha de nacimiento</label>
-          <input
-            type="date"
-            name=""
-            id="calendario"
-            class="col-8"
-            formControlName="fechaDeNacimiento"
-          />
-        </div>
+              <td>
+                <ngb-highlight
+                  class="text-gray"
+                  [result]="empleado.nombre"
+                  [term]="busqueda"
+                ></ngb-highlight>
+              </td>
 
-        <div class="grupo-input">
-          <label for="edad" class="col-4">Edad</label>
-          <input
-            type="number"
-            placeholder="Edad"
-            id="edad"
-            class="col-8"
-            formControlName="edad"
-          />
-        </div>
+              <!-- Edad -->
 
-        <div class="grupo-input">
-          <label for="estatus" class="col-4">Estatus</label>
-          <input type="checkbox" id="estatus" formControlName="estatus" />
-        </div>
-      </div>
+              <td>
+                <ngb-highlight
+                  class="text-gray"
+                  [result]="empleado.edad"
+                  [term]="busqueda"
+                ></ngb-highlight>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </ng-container>
 
-      <div class="d-flex gap-3">
-        <button
-          type="button"
-          class="btn btn-danger w-50"
-          (click)="botonCancelar()"
+      <ng-template #noRegistros>
+        <p>No hay registros para mostrar.</p>
+      </ng-template>
+    </div>
+
+    <!-- COLUMNA DE LA DERECHA (PARA LOS DETALLES) -->
+    <div class="col-lg-4 columna-derecha" *ngIf="mostrarColumnaDerecha">
+      <form
+        autocomplete="off"
+        (ngSubmit)="envioFormulario()"
+        [formGroup]="empleadoForm"
+      >
+        <p class="titulo-formulario m-0">Agregar empleado</p>
+        <span class="texto-descriptivo"
+          >Ingresa los datos del trabajor en el siguiente formulario</span
         >
-          Cancelar
-        </button>
 
-        <button type="submit" class="btn btn-success w-50">Guardar</button>
+        <div class="grupo-formulario">
+          <p class="subtitulo-seccion">DATOS GENERALES</p>
 
-        <button type="button" (click)="dev()">dev</button>
-      </div>
-    </form>
+          <div class="grupo-input">
+            <label for="nombre" class="col-4">Nombre</label>
+            <input
+              type="text"
+              class="col-8"
+              placeholder="Ingrese nombre"
+              id="nombre"
+              formControlName="nombre"
+            />
+          </div>
+
+          <div class="grupo-input">
+            <label for="calendario " class="col-4">Fecha de nacimiento</label>
+            <input
+              type="date"
+              name=""
+              id="calendario"
+              class="col-8"
+              formControlName="fechaDeNacimiento"
+            />
+          </div>
+
+          <div class="grupo-input">
+            <label for="edad" class="col-4">Edad</label>
+            <input
+              type="number"
+              placeholder="Edad"
+              id="edad"
+              class="col-8"
+              formControlName="edad"
+            />
+          </div>
+
+          <div class="grupo-input">
+            <label for="edad" class="col-4">Cargo</label>
+            <select formControlName="cargo" class="col-8">
+              <option
+                *ngFor="let cargo of catalogoDeCargos"
+                value="{{ cargo.id }}"
+              >
+                {{ cargo.descripcion }}
+              </option>
+            </select>
+          </div>
+
+          <div class="grupo-input">
+            <label for="estatus" class="col-4">Estatus</label>
+            <input type="checkbox" id="estatus" formControlName="estatus" />
+          </div>
+        </div>
+
+        <div class="d-flex gap-3">
+          <button
+            type="button"
+            class="btn btn-danger w-50"
+            (click)="botonCancelar()"
+          >
+            Cancelar
+          </button>
+
+          <button type="submit" class="btn btn-success w-50">Guardar</button>
+
+          <button type="button" (click)="dev()">dev</button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

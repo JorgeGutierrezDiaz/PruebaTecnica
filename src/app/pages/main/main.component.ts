@@ -38,10 +38,13 @@ export class MainComponent implements OnInit {
     idCargo: 1,
   };
 
+  //Busqueda
+  busqueda: string = '';
+
   // Catalogos
   catalogoDeEmpleados: EmpleadoInterface[] = [];
   catalogoDeCargos: CargoInterface[] = [];
-
+  filteredEmpleados: EmpleadoInterface[] = [];
   constructor(
     private alertService: AlertServiceService,
     private databaseService: DatabaseService,
@@ -52,6 +55,7 @@ export class MainComponent implements OnInit {
       fechaDeNacimiento: ['', [Validators.required]],
       edad: ['', [Validators.required]],
       estatus: [''],
+      cargo: ['0', [Validators.required]],
     });
   }
 
@@ -119,5 +123,6 @@ export class MainComponent implements OnInit {
     await this.obtenerCatalogos();
     console.log(this.catalogoDeEmpleados);
     console.log(this.catalogoDeCargos);
+
   }
 }

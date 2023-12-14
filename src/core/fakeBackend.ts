@@ -31,6 +31,7 @@ export let backend = {
 };
 
 export let Catalogocargos: CargoInterface[] = [
+  { id: 0, descripcion: 'Seleccione...' },
   { id: 1, descripcion: 'Gerente' },
   { id: 2, descripcion: 'Coordinador' },
   { id: 3, descripcion: 'Subdirector' },
