@@ -1,1 +1,60 @@
-<p>main works!</p>
+<h3 class="title">Administrador de empleados</h3>
+<div class="row">
+  <!-- COLUMNA DE LA IZQUIERDA (TABLA)-->
+  <div class="col container-fluid">
+    <table class="table text-center align-middle">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Edad</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+
+  <!-- COLUMNA DE LA DERECHA (PARA LOS DETALLES) -->
+  <div class="col-lg-4 columna-derecha"  *ngIf="mostrarColumnaDerecha">
+    <form autocomplete="off">
+      <p class="titulo-formulario m-0">Agregar empleado</p>
+      <span class="texto-descriptivo"
+        >Ingresa los datos del trabajor en el siguiente formulario</span
+      >
+
+      <div class="grupo-formulario">
+        <p class="subtitulo-seccion">DATOS GENERALES</p>
+
+        <div class="grupo-input">
+          <label for="nombre" class="col-4">Nombre</label>
+          <input
+            type="text"
+            class="col-8"
+            placeholder="Ingrese nombre"
+            id="nombre"
+          />
+        </div>
+
+        <div class="grupo-input">
+          <label for="calendario " class="col-4">Fecha de nacimiento</label>
+          <input type="date" name="" id="calendario" class="col-8" />
+        </div>
+
+        <div class="grupo-input">
+          <label for="edad" class="col-4">Edad</label>
+          <input type="number" placeholder="Edad" id="edad" class="col-8" />
+        </div>
+
+        <div class="grupo-input">
+          <label for="nombre" class="col-4">Estatus</label>
+          <input type="radio" id="estatus" />
+        </div>
+      </div>
+
+      <div class="d-flex gap-3">
+        <button type="button" class="btn btn-danger w-50" (click)="botonCancelar()">Cancelar</button>
+
+        <button type="submit" class="btn btn-success w-50" (click)="botonGuardar()">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
