@@ -34,5 +34,15 @@ export class AlertServiceService {
       timerProgressBar: true,
     });
   }
+
+  errorAlert(mensaje: string = 'Hubo un error'): void {
+    Swal.fire({
+      icon: 'error',
+      title: mensaje,
+      showConfirmButton: false,
+      timer: 1100,
+      timerProgressBar: true,
+    });
+  }
   constructor() {}
 }
