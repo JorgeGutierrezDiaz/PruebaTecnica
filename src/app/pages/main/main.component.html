@@ -80,15 +80,17 @@
         [formGroup]="empleadoForm"
       >
         <p class="titulo-formulario m-0">Agregar empleado</p>
-        <span class="texto-descriptivo"
-          >Ingresa los datos del trabajor en el siguiente formulario</span
-        >
+        <span class="texto-descriptivo">
+          Ingresa los datos del trabajador en el siguiente formulario
+        </span>
 
         <div class="grupo-formulario">
           <p class="subtitulo-seccion">DATOS GENERALES</p>
 
           <div class="grupo-input">
-            <label for="nombre" class="col-4">Nombre</label>
+            <label for="nombre" class="col-4">
+              Nombre <span class="text-danger">*</span>
+            </label>
             <input
               type="text"
               class="col-8"
@@ -96,32 +98,77 @@
               id="nombre"
               formControlName="nombre"
             />
+
+            <div
+              *ngIf="
+                empleadoForm.get('nombre')?.invalid &&
+                empleadoForm.get('nombre')?.touched
+              "
+            >
+              <div *ngIf="empleadoForm.get('nombre')?.hasError('required')">
+                <span class="validationMessage"
+                  >El nombre es obligatorio.
+                </span>
+              </div>
+            </div>
           </div>
 
           <div class="grupo-input">
-            <label for="calendario " class="col-4">Fecha de nacimiento</label>
+            <label for="calendario " class="col-4"
+              >Fecha de nacimiento <span class="text-danger">*</span>
+            </label>
             <input
               type="date"
               name=""
               id="calendario"
               class="col-8"
               formControlName="fechaDeNacimiento"
+              (change)="calcularEdad()"
             />
+
+            <div
+              *ngIf="
+                empleadoForm.get('fechaDeNacimiento')?.hasError('required') &&
+                empleadoForm.get('fechaDeNacimiento')?.touched
+              "
+            >
+              <span class="validationMessage"
+                >La fecha de nacimiento es requerida.</span
+              >
+            </div>
+            <div
+              *ngIf="
+                empleadoForm
+                  .get('fechaDeNacimiento')
+                  ?.hasError('fechaInvalida') &&
+                empleadoForm.get('fechaDeNacimiento')?.touched
+              "
+            >
+              <span class="validationMessage"
+                >La fecha de nacimiento no puede ser mayor que la fecha
+                actual.</span
+              >
+            </div>
           </div>
 
           <div class="grupo-input">
-            <label for="edad" class="col-4">Edad</label>
+            <label for="edad" class="col-4"
+              >Edad <span class="text-danger">*</span>
+            </label>
             <input
               type="number"
               placeholder="Edad"
               id="edad"
               class="col-8"
               formControlName="edad"
+              readonly
             />
           </div>
 
           <div class="grupo-input">
-            <label for="edad" class="col-4">Cargo</label>
+            <label for="edad" class="col-4"
+              >Cargo <span class="text-danger">*</span>
+            </label>
             <select formControlName="cargo" class="col-8">
               <option
                 *ngFor="let cargo of catalogoDeCargos"
@@ -130,6 +177,17 @@
                 {{ cargo.descripcion }}
               </option>
             </select>
+
+            <div
+              *ngIf="
+                empleadoForm.get('cargo')?.hasError('seleccionaUno') &&
+                empleadoForm.get('cargo')?.touched
+              "
+            >
+              <span class="validationMessage"
+                >Por favor, selecciona un cargo.</span
+              >
+            </div>
           </div>
 
           <div class="grupo-input">

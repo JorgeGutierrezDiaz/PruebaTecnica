@@ -18,11 +18,17 @@ h3 {
 
 .grupo-formulario {
   padding: 5px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 .grupo-input {
   margin-bottom: 10px;
 }
 .content {
   margin: 40px 5rem;
+}
+
+.validationMessage {
+  font-weight: bold;
+  font-size: 15px;
+  color: red;
 }

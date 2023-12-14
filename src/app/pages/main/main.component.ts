@@ -14,6 +14,10 @@ import { DatabaseService } from 'src/core/services/database.service';
 //Constants
 import { backend, initialID, Catalogocargos } from 'src/core/fakeBackend';
 
+//Validators
+import { fechaNacimientoValidator } from 'src/core/validators/fecha-nacimiento.validator';
+import { seleccionaUnoValidator } from 'src/core/validators/selecciona-uno.validator.ts';
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -52,10 +56,13 @@ export class MainComponent implements OnInit {
   ) {
     this.empleadoForm = this.formBuilder.group({
       nombre: ['', [Validators.required]],
-      fechaDeNacimiento: ['', [Validators.required]],
+      fechaDeNacimiento: [
+        '',
+        [Validators.required, fechaNacimientoValidator()],
+      ],
       edad: ['', [Validators.required]],
       estatus: [''],
-      cargo: ['0', [Validators.required]],
+      cargo: ['0', [Validators.required, seleccionaUnoValidator()]],
     });
   }
 
@@ -97,7 +104,9 @@ export class MainComponent implements OnInit {
 
   envioFormulario(): void {
     if (!this.empleadoForm.valid) {
-      this.alertService.errorAlert('Formulario incompleta y/o invalido');
+      // this.alertService.errorAlert('Formulario incompleta y/o invalido');
+      this.marcarControlesComoTocados();
+      return;
     }
 
     let tempData = this.databaseService.getData();
@@ -109,7 +118,7 @@ export class MainComponent implements OnInit {
       edad: this.empleadoForm.value.edad,
       fechaDeNacimiento: this.empleadoForm.value.fechaDeNacimiento,
       estatus: this.empleadoForm.value.estatus,
-      idCargo: 1,
+      idCargo: this.empleadoForm.value.cargo,
     };
 
     let newLatestID = this.empleadoData.id;
@@ -117,12 +126,29 @@ export class MainComponent implements OnInit {
 
     this.databaseService.saveData(tempData);
     this.databaseService.saveLatestId(String(newLatestID));
+
+    this.alertService.successAlert();
   }
 
   async dev(): Promise<any> {
     await this.obtenerCatalogos();
-    console.log(this.catalogoDeEmpleados);
-    console.log(this.catalogoDeCargos);
+    console.log(this.empleadoForm);
+  }
 
+  calcularEdad() {
+    const fechaNacimiento = this.empleadoForm.get('fechaDeNacimiento')?.value;
+    if (fechaNacimiento) {
+      const fechaNacimientoDate = new Date(fechaNacimiento);
+      const hoy = new Date();
+      const edad = hoy.getFullYear() - fechaNacimientoDate.getFullYear();
+
+      this.empleadoForm.get('edad')?.setValue(edad);
+    }
+  }
+
+  marcarControlesComoTocados() {
+    Object.values(this.empleadoForm.controls).forEach((control) => {
+      control.markAsTouched();
+    });
   }
 }
