@@ -1,5 +1,6 @@
-//Guardamos la base de datos, despues esto lo usamos para guardarlo todo el objeto completo en localstorage simulando una api
+import { CargoInterface } from './models/cargo.model';
 
+//Guardamos la base de datos, despues esto lo usamos para guardarlo todo el objeto completo en localstorage simulando una api
 export let backend = {
   content: [],
   pageable: {
@@ -29,4 +30,9 @@ export let backend = {
   empty: false,
 };
 
+export let Catalogocargos: CargoInterface[] = [
+  { id: 1, descripcion: 'Gerente' },
+  { id: 2, descripcion: 'Coordinador' },
+  { id: 3, descripcion: 'Subdirector' },
+];
 export let initialID = '0';

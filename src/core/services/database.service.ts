@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Cargo } from '../models/cargo.model';
+import { CargoInterface } from '../models/cargo.model';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,4 @@
-export interface Cargo {
+export interface CargoInterface {
   id: number;
   descripcion: string;
 }

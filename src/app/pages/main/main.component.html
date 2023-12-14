@@ -10,6 +10,17 @@
           <th>Edad</th>
         </tr>
       </thead>
+
+      <tbody>
+        <tr *ngFor="let empleado of catalogoDeEmpleados; let i = index">
+          <td>
+            <ngb-highlight
+              class="text-gray"
+              [result]="factura.descripcion"
+            ></ngb-highlight>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
@@ -76,14 +87,9 @@
           Cancelar
         </button>
 
-        <button
-          type="submit"
-          class="btn btn-success w-50"
-        >
-          Guardar
-        </button>
+        <button type="submit" class="btn btn-success w-50">Guardar</button>
 
-        <button type="button" (click)="dev()"> dev</button>
+        <button type="button" (click)="dev()">dev</button>
       </div>
     </form>
   </div>

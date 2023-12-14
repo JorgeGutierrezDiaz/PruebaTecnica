@@ -1,17 +1,18 @@
 //Basic imports
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 //Interfaces
-import { Cargo } from 'src/core/models/cargo.model';
-import { Empleado } from 'src/core/models/empleado.model';
+import { CargoInterface } from 'src/core/models/cargo.model';
+import { fakeBackendInterface } from 'src/core/models/fakeBackend.model';
+import { EmpleadoInterface } from 'src/core/models/empleado.model';
 
 //Services
 import { AlertServiceService } from 'src/core/services/alert-service.service';
 import { DatabaseService } from 'src/core/services/database.service';
 
 //Constants
-import { backend, initialID } from 'src/core/fakeBackend';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { backend, initialID, Catalogocargos } from 'src/core/fakeBackend';
 
 @Component({
   selector: 'app-main',
@@ -20,15 +21,15 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   providers: [AlertServiceService],
 })
 export class MainComponent implements OnInit {
-  //Catalogos
-  empleado: Empleado[] = [];
+  //  Interfaces
+  empleado: EmpleadoInterface[] = [];
 
   //Columnas
   mostrarColumnaDerecha: boolean = true;
 
   //Formulario
   empleadoForm!: FormGroup;
-  empleadoData: Empleado = {
+  empleadoData: EmpleadoInterface = {
     id: 0,
     nombre: '',
     fechaDeNacimiento: '',
@@ -36,6 +37,10 @@ export class MainComponent implements OnInit {
     estatus: false,
     idCargo: 1,
   };
+
+  // Catalogos
+  catalogoDeEmpleados: EmpleadoInterface[] = [];
+  catalogoDeCargos: CargoInterface[] = [];
 
   constructor(
     private alertService: AlertServiceService,
@@ -50,7 +55,7 @@ export class MainComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     // Intentamos cargar los datos almacenados en localStorage
     const storedData = this.databaseService.getData();
     const lastID = this.databaseService.getLastId();
@@ -64,12 +69,26 @@ export class MainComponent implements OnInit {
     if (!lastID) {
       this.databaseService.saveLatestId(initialID);
     }
+
+    await this.obtenerCatalogos();
+  }
+
+  async obtenerCatalogos(): Promise<void> {
+    try {
+      const database: fakeBackendInterface =
+        await this.databaseService.getData();
+      this.catalogoDeEmpleados = database.content;
+      this.catalogoDeCargos = Catalogocargos;
+    } catch (error) {
+      this.alertService.errorAlert(
+        'No se pudieron obtener los catálogos de datos'
+      );
+    }
   }
 
   botonCancelar(): void {
     this.mostrarColumnaDerecha = false;
-
-    console.log(this.empleadoForm);
+    this.empleadoForm.reset();
   }
 
   envioFormulario(): void {
@@ -96,11 +115,9 @@ export class MainComponent implements OnInit {
     this.databaseService.saveLatestId(String(newLatestID));
   }
 
-  dev(): void {
-    let lastID = this.databaseService.getLastId();
-    let data = this.databaseService.getData();
-
-    console.log(data);
-    console.log(lastID);
+  async dev(): Promise<any> {
+    await this.obtenerCatalogos();
+    console.log(this.catalogoDeEmpleados);
+    console.log(this.catalogoDeCargos);
   }
 }
