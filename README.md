@@ -4,9 +4,9 @@ Proyecto de registro de empleados desarrollado con Angular 13.
 
 ## Requisitos
 
-- Node.js (versión X.X.X)
-- npm (versión X.X.X)
-- Angular CLI (versión X.X.X)
+- Node.js (versión 16.20.2)
+- npm (versión 8.19.4)
+- Angular CLI (versión 13.1.0)
 
 ## Instalación
 
@@ -28,23 +28,30 @@ Para ejecutar la aplicación abre la linea de comandos y ejecuta
 ```bash
  ng serve
 
+```
+
 Abre tu navegador y navega a http://localhost:4200/ para ver la aplicación.
 
 # Estructura del Proyecto
 
 ## /src
+
 Contiene el código fuente de la aplicación.
 
 ### /app
+
 Directorio principal de la aplicación.
 
 #### /app/pages
+
 Contiene los componentes específicos de la aplicación.
 
 #### /app/assets
+
 Archivos estáticos como imágenes o estilos.
 
 #### /app/core
+
 Contiene servicios, modelos, pipes, validadores, etc.
 
 ## Dependencias y Plugins
@@ -53,4 +60,7 @@ Contiene servicios, modelos, pipes, validadores, etc.
 - Bootstrap 5.3
 - Sweetalert2 11.10
 - ngx-pagination
+
+```
+
 ```
