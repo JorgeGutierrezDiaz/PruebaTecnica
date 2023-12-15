@@ -33,6 +33,7 @@ export class MainComponent implements OnInit {
 
   //Formulario
   empleadoForm!: FormGroup;
+  editarEmpleadoForm!: FormGroup;
   empleadoData: EmpleadoInterface = {
     id: 0,
     nombre: '',
@@ -50,6 +51,10 @@ export class MainComponent implements OnInit {
   itemsPorPagina = 5;
   pagina = 1;
 
+  //Inline Editing
+  modoDeEdicion: boolean = false;
+  indiceRegistroEditando: number = -1;
+
   // Catalogos
   catalogoDeEmpleados: EmpleadoInterface[] = [];
   catalogoDeCargos: CargoInterface[] = [];
@@ -60,6 +65,18 @@ export class MainComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {
     this.empleadoForm = this.formBuilder.group({
+      nombre: ['', [Validators.required]],
+      fechaDeNacimiento: [
+        '',
+        [Validators.required, fechaNacimientoValidator()],
+      ],
+      edad: ['', [Validators.required]],
+      estatus: [true],
+      cargo: ['0', [Validators.required, seleccionaUnoValidator()]],
+    });
+
+    this.editarEmpleadoForm = this.formBuilder.group({
+      id: [0],
       nombre: ['', [Validators.required]],
       fechaDeNacimiento: [
         '',
@@ -102,8 +119,9 @@ export class MainComponent implements OnInit {
     }
   }
 
-  agregarRegistrosRapido(): void {
-    this.databaseService.insertTestingData();
+  async agregarRegistrosRapido(): Promise<void> {
+    await this.databaseService.insertTestingData();
+    await this.obtenerCatalogos();
   }
 
   filtradoPorEstatus(propiedadFiltro: Event): void {
@@ -144,7 +162,18 @@ export class MainComponent implements OnInit {
     this.itemsPorPagina = parseInt(numero.target.value);
   }
 
-  editarEmpleado(empleado: EmpleadoInterface) {}
+  editarEmpleado(empleado: EmpleadoInterface, indice: number) {
+    this.editarEmpleadoForm.patchValue({
+      id: empleado.id,
+      nombre: empleado.nombre,
+      fechaDeNacimiento: empleado.fechaDeNacimiento,
+      edad: empleado.edad,
+      estatus: empleado.estatus,
+      cargo: empleado.idCargo,
+    });
+    this.indiceRegistroEditando = indice;
+    this.modoDeEdicion = true;
+  }
 
   async cambiarStatus(empleado: EmpleadoInterface): Promise<any> {
     let copiaEmpleado = empleado;
@@ -192,6 +221,36 @@ export class MainComponent implements OnInit {
   async dev(): Promise<any> {
     const database: fakeBackendInterface = await this.databaseService.getData();
     console.log(database);
+  }
+
+  cancelarEdicion(): void {
+    this.modoDeEdicion = false;
+    this.indiceRegistroEditando = -1;
+    this.editarEmpleadoForm.reset();
+  }
+
+  guardarEdicion(): void {
+    if (!this.editarEmpleadoForm.valid) {
+      Object.values(this.editarEmpleadoForm.controls).forEach((control) => {
+        control.markAsTouched();
+      });
+
+      return;
+    }
+
+    let empleadoEditado: EmpleadoInterface = {
+      id: this.editarEmpleadoForm.value.id,
+      nombre: this.editarEmpleadoForm.value.nombre,
+      fechaDeNacimiento: this.editarEmpleadoForm.value.fechaDeNacimiento,
+      edad: this.editarEmpleadoForm.value.edad,
+      estatus: this.editarEmpleadoForm.value.estatus,
+      idCargo: this.editarEmpleadoForm.value.cargo,
+    };
+    this.databaseService.editEmployeeUsingID(empleadoEditado);
+    this.alertService.successAlert('Empleado modificado correctamente');
+
+    this.cancelarEdicion();
+    this.obtenerCatalogos();
   }
 
   getDescripcionCargo(idCargo: string): string {

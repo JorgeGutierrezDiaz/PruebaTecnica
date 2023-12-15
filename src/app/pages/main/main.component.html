@@ -7,7 +7,12 @@
     <button (click)="agregarRegistrosRapido()" class="btn btn-info">
       Agregar registros
     </button>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
   </div>
 
   <h3 class="title">Administrador de empleados</h3>
@@ -32,7 +37,10 @@
       >
         <div class="accordion-body">
           <div class="row d-flex flex-column">
+            <label for="barraBusqueda" class="fw-light">Busqueda</label>
+
             <input
+              id="barraBusqueda"
               type="text"
               class="form-control search search-longer mb-3"
               placeholder="Buscar..."
@@ -50,20 +58,20 @@
               <option value="true">Activos</option>
               <option value="false">Inactivos</option>
             </select>
-          </div>
 
-          <p>Resultados por pagina</p>
-          <select
-            class="form-control"
-            (change)="cambiarResultadosPorPagina($event)"
-          >
-            <option value="1">1</option>
-            <option value="2" selected>5</option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
+            <span class="fw-light mt-3">Resultados por pagina</span>
+            <select
+              class="form-control"
+              (change)="cambiarResultadosPorPagina($event)"
+            >
+              <option value="1">1</option>
+              <option value="2" selected>5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -84,111 +92,182 @@
           else noRegistros
         "
       >
-        <table class="table text-center align-middle">
-          <thead>
-            <tr>
-              <th>Nombre</th>
-              <th>Cargo</th>
-              <th>Edad (Años)</th>
-              <th>Usuario activo</th>
-              <th></th>
-            </tr>
-          </thead>
+        <form [formGroup]="editarEmpleadoForm">
+          <table class="table text-center align-middle">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Cargo</th>
+                <th>Edad (Años)</th>
+                <th>Usuario activo</th>
+                <th></th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <tr
-              *ngFor="
-                let empleado of catalogoDeEmpleados
-                  | search : busqueda : estatusFiltro
-                  | paginate
-                    : { itemsPerPage: itemsPorPagina, currentPage: pagina };
-                let i = index
-              "
-            >
-              <!-- Nombre -->
-              <td>
-                <ngb-highlight
-                  class="text-gray"
-                  [result]="empleado.nombre"
-                  [term]="busqueda"
-                ></ngb-highlight>
-              </td>
+            <tbody>
+              <tr
+                *ngFor="
+                  let empleado of catalogoDeEmpleados
+                    | search : busqueda : estatusFiltro
+                    | paginate
+                      : { itemsPerPage: itemsPorPagina, currentPage: pagina };
+                  let i = index
+                "
+              >
+                <!-- id -->
 
-              <!-- Cargo -->
+                <input formControlName="id" type="text" *ngIf="false" />
 
-              <td>
-                <ngb-highlight
-                  class="text-gray"
-                  [result]="getDescripcionCargo(empleado.idCargo)"
-                  [term]="busqueda"
-                ></ngb-highlight>
-              </td>
-
-              <!-- Edad -->
-
-              <td>
-                <ngb-highlight
-                  class="text-gray"
-                  [result]="empleado.edad"
-                  [term]="busqueda"
-                ></ngb-highlight>
-              </td>
-
-              <!-- Usuario activo -->
-
-              <td>
-                <img
-                  src="../../../assets/icons/correcto.png"
-                  alt=""
-                  *ngIf="empleado.estatus === true"
-                />
-              </td>
-
-              <!-- Acciones -->
-              <td class="d-flex gap-3 tableButtons">
-                <button
-                  class="btn btn-md"
-                  (click)="borrarEmpleado(empleado)"
-                  type="button"
-                >
-                  <img
-                    src="../../../assets/icons/borrar.png"
-                    alt=""
-                    class="icon"
-                    srcset=""
+                <!-- Nombre -->
+                <td style="max-width: 100px">
+                  <!--Empieza Campos de edicion - Nombre -->
+                  <input
+                    formControlName="nombre"
+                    type="text"
+                    class="form-control"
+                    placeholder="Nombre"
+                    *ngIf="modoDeEdicion && i === indiceRegistroEditando"
                   />
-                </button>
+                  <div *ngIf="editarEmpleadoForm.get('nombre')?.hasError('required') &&
+                  editarEmpleadoForm.get('nombre')?.touched && modoDeEdicion && i === indiceRegistroEditando">
+                    <span class="validationMessage"
+                      >El nombre es obligatorio.
+                    </span>
+                  </div>
+                  <!--Termina Campos de edicion - Nombre -->
 
-                <button
-                  class="btn btn-md"
-                  (click)="editarEmpleado(empleado)"
-                  type="button"
-                  *ngIf="empleado.estatus === false"
-                >
-                  <img
-                    src="../../../assets/icons/editar.png"
-                    alt=""
-                    srcset=""
-                    class="icon"
-                  />
-                </button>
+                  <ngb-highlight
+                    class="text-gray"
+                    [result]="empleado.nombre"
+                    [term]="busqueda"
+                    *ngIf="!modoDeEdicion || i !== indiceRegistroEditando"
+                  ></ngb-highlight>
+                </td>
 
-                <button
-                  class="btn btn-md"
-                  (click)="cambiarStatus(empleado)"
-                  type="button"
-                >
+                <!-- Cargo -->
+
+                <td style="max-width: 100px">
+                   <!--Empieza Campos de edicion - Cargo -->
+
+                  <select
+                    formControlName="cargo"
+                    class="col-8 form-control"
+                    *ngIf="modoDeEdicion && i === indiceRegistroEditando"
+                  >
+                    <option
+                      *ngFor="let cargo of catalogoDeCargos"
+                      value="{{ cargo.id }}"
+                    >
+                      {{ cargo.descripcion }}
+                    </option>
+                  </select>
+
+                  <div *ngIf="editarEmpleadoForm.get('cargo')?.hasError('seleccionaUno') &&
+                  editarEmpleadoForm.get('cargo')?.touched  && modoDeEdicion && i === indiceRegistroEditando">
+                    <span class="validationMessage"
+                      >El cargo es obligatorio.
+                    </span>
+                  </div>
+                  <!--Termina Campos de edicion - Cargo -->
+
+                  <ngb-highlight
+                    class="text-gray"
+                    [result]="getDescripcionCargo(empleado.idCargo)"
+                    [term]="busqueda"
+                    *ngIf="!modoDeEdicion || i !== indiceRegistroEditando"
+                  ></ngb-highlight>
+                </td>
+
+                <!-- Edad -->
+
+                <td>
+                  <ngb-highlight
+                    class="text-gray"
+                    [result]="empleado.edad"
+                    [term]="busqueda"
+                  ></ngb-highlight>
+                </td>
+                <!-- Usuario activo -->
+
+                <td>
                   <img
-                    src="../../../assets/icons/cambiar.png"
+                    src="../../../assets/icons/correcto.png"
                     alt=""
-                    srcset=""
-                    class="icon"
+                    *ngIf="empleado.estatus === true"
                   />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                </td>
+
+                <!-- Acciones -->
+                <td class="d-flex gap-3 tableButtons">
+                  <!-- Boton para cancelar la edicion -->
+                  <button
+                    class="btn btn-md btn-danger"
+                    (click)="cancelarEdicion()"
+                    type="button"
+                    *ngIf="modoDeEdicion && i === indiceRegistroEditando"
+                  >
+                    Cancelar
+                  </button>
+
+                  <!-- Boton para Guardar la edicion -->
+                  <button
+                    class="btn btn-md btn-success"
+                    (click)="guardarEdicion()"
+                    type="button"
+                    *ngIf="modoDeEdicion && i === indiceRegistroEditando"
+                  >
+                    Guardar
+                  </button>
+
+                  <button
+                    class="btn btn-md"
+                    (click)="borrarEmpleado(empleado)"
+                    type="button"
+                    *ngIf="!modoDeEdicion || i !== indiceRegistroEditando"
+                  >
+                    <img
+                      src="../../../assets/icons/borrar.png"
+                      alt=""
+                      class="icon"
+                      srcset=""
+                    />
+                  </button>
+
+                  <button
+                    class="btn btn-md"
+                    (click)="editarEmpleado(empleado, i)"
+                    type="button"
+                    *ngIf="
+                      empleado.estatus === false &&
+                      (!modoDeEdicion || i !== indiceRegistroEditando)
+                    "
+                  >
+                    <img
+                      src="../../../assets/icons/editar.png"
+                      alt=""
+                      srcset=""
+                      class="icon"
+                    />
+                  </button>
+
+                  <button
+                    class="btn btn-md"
+                    (click)="cambiarStatus(empleado)"
+                    type="button"
+                    *ngIf="!modoDeEdicion || i !== indiceRegistroEditando"
+                  >
+                    <img
+                      src="../../../assets/icons/cambiar.png"
+                      alt=""
+                      srcset=""
+                      class="icon"
+                    />
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
       </ng-container>
 
       <pagination-controls
