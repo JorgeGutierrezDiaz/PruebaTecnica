@@ -32,7 +32,7 @@ El proyecto "Registro de Empleados" es un sistema de gestión de empleados desar
 - Bootstrap 5.3
 - Sweetalert2 11.10
 - ngx-pagination
-- 
+  
 ## Instalación
 
 1. **Clona el repositorio:**
