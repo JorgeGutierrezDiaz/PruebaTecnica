@@ -17,6 +17,8 @@ El proyecto "Registro de Empleados" es un sistema de gestión de empleados desar
 - **Configuración de Registros por Página:** Personaliza la cantidad de registros visualizados por página.
 - **Inserción Rápida:** Facilita la inserción inmediata de múltiples registros.
 - **Sistema de Alertas:** Utiliza alertas visuales y confirmaciones para mejorar la experiencia del usuario.
+- **Persistencia de Datos:** Utiliza LocalStorage para almacenar datos y evitar la pérdida de información al recargar la página.
+
 
 ## Requisitos para su instalacion
 
