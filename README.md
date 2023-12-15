@@ -2,9 +2,10 @@
 
 Proyecto de registro de empleados desarrollado con Angular 13.
 
-## Demo del proyecto
-Ve el demo del proyecto con el siguiente link
-https://657c64a6e346351e06cd2b48--inspiring-pavlova-352cf9.netlify.app/
+## Demostración
+
+Explora la demo del proyecto en vivo: [Registro de Empleados Demo](https://657c64a6e346351e06cd2b48--inspiring-pavlova-352cf9.netlify.app/)
+
 
 ## Descripcion del proyecto
 
@@ -86,6 +87,3 @@ Archivos estáticos como imágenes o estilos.
 
 Contiene servicios, modelos, pipes, validadores, etc.
 
-# Demostración
-
-Explora la demo del proyecto en vivo: [Registro de Empleados Demo](https://657c64a6e346351e06cd2b48--inspiring-pavlova-352cf9.netlify.app/)
