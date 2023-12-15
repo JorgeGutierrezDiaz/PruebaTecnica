@@ -46,6 +46,10 @@ export class MainComponent implements OnInit {
   busqueda: string = '';
   estatusFiltro: boolean | undefined = undefined;
 
+  //Paginacion
+  itemsPorPagina = 5;
+  pagina = 1;
+
   // Catalogos
   catalogoDeEmpleados: EmpleadoInterface[] = [];
   catalogoDeCargos: CargoInterface[] = [];
@@ -98,6 +102,10 @@ export class MainComponent implements OnInit {
     }
   }
 
+  agregarRegistrosRapido(): void {
+    this.databaseService.insertTestingData();
+  }
+
   filtradoPorEstatus(propiedadFiltro: Event): void {
     const valorSeleccionado = (propiedadFiltro.target as HTMLSelectElement)
       .value;
@@ -130,6 +138,10 @@ export class MainComponent implements OnInit {
       estatus: true,
       cargo: '0',
     });
+  }
+
+  cambiarResultadosPorPagina(numero: any): void {
+    this.itemsPorPagina = parseInt(numero.target.value);
   }
 
   editarEmpleado(empleado: EmpleadoInterface) {}
@@ -178,8 +190,8 @@ export class MainComponent implements OnInit {
   }
 
   async dev(): Promise<any> {
-    await this.obtenerCatalogos();
-    console.log(this.catalogoDeEmpleados);
+    const database: fakeBackendInterface = await this.databaseService.getData();
+    console.log(database);
   }
 
   getDescripcionCargo(idCargo: string): string {

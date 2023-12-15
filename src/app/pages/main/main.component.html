@@ -1,4 +1,15 @@
 <div class="content">
+  <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <label>Recursos para testear la app!</label>
+    <p>
+      Da click en el siguiente boton para agregar instantaneamente 30 registros
+    </p>
+    <button (click)="agregarRegistrosRapido()" class="btn btn-info">
+      Agregar registros
+    </button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
   <h3 class="title">Administrador de empleados</h3>
 
   <div class="accordion" id="accordionExample">
@@ -9,7 +20,6 @@
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#collapseOne"
-          aria-expanded="true"
           aria-controls="collapseOne"
         >
           Filtros
@@ -17,7 +27,7 @@
       </h2>
       <div
         id="collapseOne"
-        class="accordion-collapse collapse show"
+        class="accordion-collapse collapse"
         data-bs-parent="#accordionExample"
       >
         <div class="accordion-body">
@@ -41,6 +51,19 @@
               <option value="false">Inactivos</option>
             </select>
           </div>
+
+          <p>Resultados por pagina</p>
+          <select
+            class="form-control"
+            (change)="cambiarResultadosPorPagina($event)"
+          >
+            <option value="1">1</option>
+            <option value="2" selected>5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
         </div>
       </div>
     </div>
@@ -75,7 +98,10 @@
           <tbody>
             <tr
               *ngFor="
-                let empleado of catalogoDeEmpleados | search : busqueda : estatusFiltro;
+                let empleado of catalogoDeEmpleados
+                  | search : busqueda : estatusFiltro
+                  | paginate
+                    : { itemsPerPage: itemsPorPagina, currentPage: pagina };
                 let i = index
               "
             >
@@ -165,6 +191,12 @@
         </table>
       </ng-container>
 
+      <pagination-controls
+        (pageChange)="pagina = $event"
+        previousLabel="Anterior"
+        nextLabel="Siguiente"
+      ></pagination-controls>
+
       <ng-template #noRegistros>
         <p>No hay registros para mostrar.</p>
       </ng-template>
@@ -191,7 +223,7 @@
             </label>
             <input
               type="text"
-              class="col-8"
+              class="col-8 form-control"
               placeholder="Ingrese nombre"
               id="nombre"
               formControlName="nombre"
@@ -219,7 +251,7 @@
               type="date"
               name=""
               id="calendario"
-              class="col-8"
+              class="col-8 form-control"
               formControlName="fechaDeNacimiento"
               (change)="calcularEdad()"
             />
@@ -257,7 +289,7 @@
               type="number"
               placeholder="Edad"
               id="edad"
-              class="col-8"
+              class="col-8 form-control"
               formControlName="edad"
               readonly
             />
@@ -267,7 +299,7 @@
             <label for="edad" class="col-4"
               >Cargo <span class="text-danger">*</span>
             </label>
-            <select formControlName="cargo" class="col-8">
+            <select formControlName="cargo" class="col-8 form-control">
               <option
                 *ngFor="let cargo of catalogoDeCargos"
                 value="{{ cargo.id }}"
@@ -290,7 +322,12 @@
 
           <div class="grupo-input">
             <label for="estatus" class="col-4">¿Usuario activo?</label>
-            <input type="checkbox" id="estatus" formControlName="estatus" />
+            <input
+              type="checkbox"
+              id="estatus"
+              formControlName="estatus"
+              class="form-check-input"
+            />
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EmpleadoInterface } from '../models/empleado.model';
 import { fakeBackendInterface } from '../models/fakeBackend.model';
+import { arrayPruebas } from '../fakeBackend';
 
 @Injectable({
   providedIn: 'root',
@@ -64,5 +65,14 @@ export class DatabaseService {
     }
   }
 
+  async insertTestingData(): Promise<any> {
+    let data = await this.getData();
+    const LatestTestId = '29';
+    data.content = [];
+    data.content = arrayPruebas;
+
+    this.saveLatestId(LatestTestId);
+    this.saveData(data);
+  }
   constructor() {}
 }

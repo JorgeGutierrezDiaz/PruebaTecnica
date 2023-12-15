@@ -11,6 +11,7 @@ import {
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPipe } from 'src/core/pipes/search.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [AppComponent, MainComponent, SearchPipe],
@@ -20,6 +21,7 @@ import { SearchPipe } from 'src/core/pipes/search.pipe';
     ReactiveFormsModule,
     NgbModule,
     FormsModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent],
