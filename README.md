@@ -1,27 +1,56 @@
-# PruebaTecnica
+# Registro de Empleados
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.1.4.
+Proyecto de registro de empleados desarrollado con Angular 13.
 
-## Development server
+## Requisitos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+- Node.js (versión X.X.X)
+- npm (versión X.X.X)
+- Angular CLI (versión X.X.X)
 
-## Code scaffolding
+## Instalación
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. **Clona el repositorio:**
 
-## Build
+   ```bash
+   git clone https://github.com/JorgeGutierrezDiaz/PruebaTecnica.git
+   cd PruebaTecnica
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+   ```
 
-## Running unit tests
+2. **Instala las dependencias:**
+   Ejecuta el comando "npm install"
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Ejecutar el proyecto
 
-## Running end-to-end tests
+Para ejecutar la aplicación abre la linea de comandos y ejecuta
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+```bash
+ ng serve
 
-## Further help
+Abre tu navegador y navega a http://localhost:4200/ para ver la aplicación.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Estructura del Proyecto
+
+## /src
+Contiene el código fuente de la aplicación.
+
+### /app
+Directorio principal de la aplicación.
+
+#### /app/pages
+Contiene los componentes específicos de la aplicación.
+
+#### /app/assets
+Archivos estáticos como imágenes o estilos.
+
+#### /app/core
+Contiene servicios, modelos, pipes, validadores, etc.
+
+## Dependencias y Plugins
+
+- Angular 13
+- Bootstrap 5.3
+- Sweetalert2 11.10
+- ngx-pagination
+```
