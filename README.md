@@ -2,12 +2,35 @@
 
 Proyecto de registro de empleados desarrollado con Angular 13.
 
-## Requisitos
+## Descripcion del proyecto
+
+El proyecto "Registro de Empleados" es un sistema de gestión de empleados desarrollado en Angular 13. Permite realizar operaciones clave en el registro de empleados, como agregar, editar, eliminar y cambiar el estado. Incorpora características como búsqueda, paginación y alertas visuales.
+
+## Características Principales
+
+- **Registro de Empleados:** Agrega nuevos empleados con información detallada.
+- **Edición de Empleados:** Permite editar la información de los empleados de manera sencilla.
+- **Eliminación de Empleados:** Posibilita la eliminación de registros, con confirmación para evitar acciones accidentales.
+- **Cambio de Estado:** Cambia el estado activo/inactivo de un empleado.
+- **Búsqueda Rápida:** Implementa una barra de búsqueda para filtrar empleados por criterios específicos.
+- **Paginación:** Ofrece un sistema de paginación para una mejor organización de los registros.
+- **Configuración de Registros por Página:** Personaliza la cantidad de registros visualizados por página.
+- **Inserción Rápida:** Facilita la inserción inmediata de múltiples registros.
+- **Sistema de Alertas:** Utiliza alertas visuales y confirmaciones para mejorar la experiencia del usuario.
+
+## Requisitos para su instalacion
 
 - Node.js (versión 16.20.2)
 - npm (versión 8.19.4)
 - Angular CLI (versión 13.1.0)
 
+## Dependencias y Plugins utilizados
+
+- Angular 13
+- Bootstrap 5.3
+- Sweetalert2 11.10
+- ngx-pagination
+- 
 ## Instalación
 
 1. **Clona el repositorio:**
@@ -54,12 +77,6 @@ Archivos estáticos como imágenes o estilos.
 
 Contiene servicios, modelos, pipes, validadores, etc.
 
-## Dependencias y Plugins
-
-- Angular 13
-- Bootstrap 5.3
-- Sweetalert2 11.10
-- ngx-pagination
 
 ```
 
