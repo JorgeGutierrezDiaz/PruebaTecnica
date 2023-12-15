@@ -218,11 +218,6 @@ export class MainComponent implements OnInit {
     });
   }
 
-  async dev(): Promise<any> {
-    const database: fakeBackendInterface = await this.databaseService.getData();
-    console.log(database);
-  }
-
   cancelarEdicion(): void {
     this.modoDeEdicion = false;
     this.indiceRegistroEditando = -1;

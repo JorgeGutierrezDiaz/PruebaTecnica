@@ -6,8 +6,6 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
-  NgbAccordionModule,
-  NgbHighlight,
   NgbModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPipe } from 'src/core/pipes/search.pipe';
@@ -21,7 +19,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     ReactiveFormsModule,
     NgbModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

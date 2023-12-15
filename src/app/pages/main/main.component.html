@@ -220,6 +220,7 @@
                   </button>
 
                   <button
+                  placement="top" ngbTooltip="Borrar registro"
                     class="btn btn-md"
                     (click)="borrarEmpleado(empleado)"
                     type="button"
@@ -234,6 +235,8 @@
                   </button>
 
                   <button
+                  placement="top" ngbTooltip="Editar registro"
+
                     class="btn btn-md"
                     (click)="editarEmpleado(empleado, i)"
                     type="button"
@@ -251,6 +254,7 @@
                   </button>
 
                   <button
+                  placement="top" ngbTooltip="Cambiar el estatus del registro"
                     class="btn btn-md"
                     (click)="cambiarStatus(empleado)"
                     type="button"
@@ -274,6 +278,7 @@
         (pageChange)="pagina = $event"
         previousLabel="Anterior"
         nextLabel="Siguiente"
+        (click)="cancelarEdicion()"
       ></pagination-controls>
 
       <ng-template #noRegistros>
@@ -420,8 +425,6 @@
           </button>
 
           <button type="submit" class="btn btn-success w-50">Guardar</button>
-
-          <button type="button" (click)="dev()">dev</button>
         </div>
       </form>
     </div>
