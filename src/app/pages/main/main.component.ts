@@ -29,7 +29,7 @@ export class MainComponent implements OnInit {
   empleado: EmpleadoInterface[] = [];
 
   //Columnas
-  mostrarColumnaDerecha: boolean = true;
+  mostrarColumnaDerecha: boolean = false;
 
   //Formulario
   empleadoForm!: FormGroup;
@@ -44,6 +44,7 @@ export class MainComponent implements OnInit {
 
   //Busqueda
   busqueda: string = '';
+  estatusFiltro: boolean | undefined = undefined;
 
   // Catalogos
   catalogoDeEmpleados: EmpleadoInterface[] = [];
@@ -61,7 +62,7 @@ export class MainComponent implements OnInit {
         [Validators.required, fechaNacimientoValidator()],
       ],
       edad: ['', [Validators.required]],
-      estatus: [''],
+      estatus: [true],
       cargo: ['0', [Validators.required, seleccionaUnoValidator()]],
     });
   }
@@ -97,20 +98,59 @@ export class MainComponent implements OnInit {
     }
   }
 
-  botonCancelar(): void {
-    this.mostrarColumnaDerecha = false;
-    this.empleadoForm.reset();
+  filtradoPorEstatus(propiedadFiltro: Event): void {
+    const valorSeleccionado = (propiedadFiltro.target as HTMLSelectElement)
+      .value;
+
+    // Si es "todos", no aplicamos filtro
+    this.estatusFiltro =
+      valorSeleccionado === 'todos' ? undefined : valorSeleccionado === 'true';
   }
 
-  envioFormulario(): void {
+  async borrarEmpleado(empleado: EmpleadoInterface): Promise<void> {
+    const response = await this.databaseService.deleteEmployee(
+      this.catalogoDeEmpleados,
+      empleado
+    );
+
+    if (response) {
+      this.alertService.successAlert('Empleado eliminado correctamente');
+      await this.obtenerCatalogos();
+    } else {
+      this.alertService.errorAlert('Ocurrio un error');
+    }
+  }
+
+  botonCancelar(): void {
+    this.mostrarColumnaDerecha = false;
+    this.empleadoForm.reset({
+      nombre: '',
+      fechaDeNacimiento: '',
+      edad: '',
+      estatus: true,
+      cargo: '0',
+    });
+  }
+
+  editarEmpleado(empleado: EmpleadoInterface) {}
+
+  async cambiarStatus(empleado: EmpleadoInterface): Promise<any> {
+    let copiaEmpleado = empleado;
+    copiaEmpleado.estatus = !copiaEmpleado.estatus;
+    this.databaseService.editEmployeeUsingID(copiaEmpleado);
+
+    await this.obtenerCatalogos();
+  }
+
+  async envioFormulario(): Promise<void> {
     if (!this.empleadoForm.valid) {
       // this.alertService.errorAlert('Formulario incompleta y/o invalido');
       this.marcarControlesComoTocados();
       return;
     }
 
-    let tempData = this.databaseService.getData();
-    let lastID: number = this.databaseService.getLastId();
+    let tempData = await this.databaseService.getData();
+    let lastID: number = await this.databaseService.getLastId();
 
     this.empleadoData = {
       id: lastID + 1,
@@ -124,15 +164,27 @@ export class MainComponent implements OnInit {
     let newLatestID = this.empleadoData.id;
     tempData.content.push(this.empleadoData);
 
-    this.databaseService.saveData(tempData);
-    this.databaseService.saveLatestId(String(newLatestID));
-
+    await this.databaseService.saveData(tempData);
+    await this.databaseService.saveLatestId(String(newLatestID));
     this.alertService.successAlert();
+    await this.obtenerCatalogos();
+    this.empleadoForm.reset({
+      nombre: '',
+      fechaDeNacimiento: '',
+      edad: '',
+      estatus: true,
+      cargo: '0',
+    });
   }
 
   async dev(): Promise<any> {
     await this.obtenerCatalogos();
-    console.log(this.empleadoForm);
+    console.log(this.catalogoDeEmpleados);
+  }
+
+  getDescripcionCargo(idCargo: string): string {
+    const cargo = Catalogocargos.find((c) => c.id === parseInt(idCargo));
+    return cargo ? cargo.descripcion : 'No especificado';
   }
 
   calcularEdad() {
@@ -144,6 +196,9 @@ export class MainComponent implements OnInit {
 
       this.empleadoForm.get('edad')?.setValue(edad);
     }
+  }
+  abrirFormulario(): void {
+    this.mostrarColumnaDerecha = true;
   }
 
   marcarControlesComoTocados() {

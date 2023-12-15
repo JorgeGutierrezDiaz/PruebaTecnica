@@ -1,54 +1,99 @@
 <div class="content">
   <h3 class="title">Administrador de empleados</h3>
 
-  <div>
-    <input
-      type="text"
-      class="form-control search search-longer"
-      placeholder="Buscar..."
-      [(ngModel)]="busqueda"
-    />
+  <div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#collapseOne"
+          aria-expanded="true"
+          aria-controls="collapseOne"
+        >
+          Filtros
+        </button>
+      </h2>
+      <div
+        id="collapseOne"
+        class="accordion-collapse collapse show"
+        data-bs-parent="#accordionExample"
+      >
+        <div class="accordion-body">
+          <div class="row d-flex flex-column">
+            <input
+              type="text"
+              class="form-control search search-longer mb-3"
+              placeholder="Buscar..."
+              [(ngModel)]="busqueda"
+            />
+            <span for="filtroCargo" class="fw-light"
+              >Filtrar empleados por estatus</span
+            >
+            <select
+              id="filtroCargo"
+              class="form-control"
+              (change)="filtradoPorEstatus($event)"
+            >
+              <option value="todos">Todos</option>
+              <option value="true">Activos</option>
+              <option value="false">Inactivos</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <div class="col-12 col-lg-4 mt-2">
+    <button class="btn btn-success btn-sm" (click)="abrirFormulario()">
+      Agregar Empleado
+    </button>
+  </div>
+
   <div class="row mt-3">
     <!-- COLUMNA DE LA IZQUIERDA (TABLA)-->
     <div class="col container-fluid">
       <ng-container
         *ngIf="
-          (catalogoDeEmpleados | search : busqueda).length >= 1;
+          (catalogoDeEmpleados | search : busqueda : estatusFiltro).length >= 1;
           else noRegistros
         "
       >
         <table class="table text-center align-middle">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Nombre</th>
-              <th>Edad</th>
+              <th>Cargo</th>
+              <th>Edad (Años)</th>
+              <th>Usuario activo</th>
+              <th></th>
             </tr>
           </thead>
 
           <tbody>
             <tr
               *ngFor="
-                let empleado of catalogoDeEmpleados | search : busqueda;
+                let empleado of catalogoDeEmpleados | search : busqueda : estatusFiltro;
                 let i = index
               "
             >
-              <!-- ID -->
-              <td>
-                <ngb-highlight
-                  class="text-gray"
-                  [result]="empleado.id"
-                  [term]="busqueda"
-                ></ngb-highlight>
-              </td>
-
               <!-- Nombre -->
-
               <td>
                 <ngb-highlight
                   class="text-gray"
                   [result]="empleado.nombre"
+                  [term]="busqueda"
+                ></ngb-highlight>
+              </td>
+
+              <!-- Cargo -->
+
+              <td>
+                <ngb-highlight
+                  class="text-gray"
+                  [result]="getDescripcionCargo(empleado.idCargo)"
                   [term]="busqueda"
                 ></ngb-highlight>
               </td>
@@ -61,6 +106,59 @@
                   [result]="empleado.edad"
                   [term]="busqueda"
                 ></ngb-highlight>
+              </td>
+
+              <!-- Usuario activo -->
+
+              <td>
+                <img
+                  src="../../../assets/icons/correcto.png"
+                  alt=""
+                  *ngIf="empleado.estatus === true"
+                />
+              </td>
+
+              <!-- Acciones -->
+              <td class="d-flex gap-3 tableButtons">
+                <button
+                  class="btn btn-md"
+                  (click)="borrarEmpleado(empleado)"
+                  type="button"
+                >
+                  <img
+                    src="../../../assets/icons/borrar.png"
+                    alt=""
+                    class="icon"
+                    srcset=""
+                  />
+                </button>
+
+                <button
+                  class="btn btn-md"
+                  (click)="editarEmpleado(empleado)"
+                  type="button"
+                  *ngIf="empleado.estatus === false"
+                >
+                  <img
+                    src="../../../assets/icons/editar.png"
+                    alt=""
+                    srcset=""
+                    class="icon"
+                  />
+                </button>
+
+                <button
+                  class="btn btn-md"
+                  (click)="cambiarStatus(empleado)"
+                  type="button"
+                >
+                  <img
+                    src="../../../assets/icons/cambiar.png"
+                    alt=""
+                    srcset=""
+                    class="icon"
+                  />
+                </button>
               </td>
             </tr>
           </tbody>
@@ -191,7 +289,7 @@
           </div>
 
           <div class="grupo-input">
-            <label for="estatus" class="col-4">Estatus</label>
+            <label for="estatus" class="col-4">¿Usuario activo?</label>
             <input type="checkbox" id="estatus" formControlName="estatus" />
           </div>
         </div>

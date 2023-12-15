@@ -25,10 +25,10 @@ export class AlertServiceService {
     });
   }
 
-  successAlert(): void {
+  successAlert(mensaje = 'Operacion ejecutada exitosamente'): void {
     Swal.fire({
       icon: 'success',
-      title: 'Operacion ejecutada exitosamente',
+      title: mensaje,
       showConfirmButton: false,
       timer: 1100,
       timerProgressBar: true,

@@ -1,3 +1,7 @@
+*:focus {
+  outline: none;
+}
+
 h3 {
   text-align: center;
 }
@@ -31,4 +35,29 @@ h3 {
   font-weight: bold;
   font-size: 15px;
   color: red;
+}
+
+.tableIcon {
+  height: 20px;
+}
+
+.tableBtn {
+  padding: 2px 8px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  background-color: #f3f3f3;
+}
+
+.icon {
+  height: 30px;
+}
+.tableButtons {
+  button {
+    padding: 10px;
+    transition: 400ms;
+  }
+  button:hover {
+    background-color: #cfcfcf;
+    transition: 500ms;
+  }
 }
