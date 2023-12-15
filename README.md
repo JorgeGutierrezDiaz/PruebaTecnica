@@ -76,8 +76,3 @@ Archivos estáticos como imágenes o estilos.
 #### /app/core
 
 Contiene servicios, modelos, pipes, validadores, etc.
-
-
-```
-
-```
