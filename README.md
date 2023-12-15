@@ -44,7 +44,10 @@ El proyecto "Registro de Empleados" es un sistema de gestión de empleados desar
    ```
 
 2. **Instala las dependencias:**
-   Ejecuta el comando "npm install"
+   Ejecuta el comando
+   ```bash
+   npm install
+    ```
 
 ## Ejecutar el proyecto
 
