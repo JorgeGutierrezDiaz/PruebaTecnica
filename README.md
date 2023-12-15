@@ -2,6 +2,10 @@
 
 Proyecto de registro de empleados desarrollado con Angular 13.
 
+## Demo del proyecto
+Ve el demo del proyecto con el siguiente link
+https://657c64a6e346351e06cd2b48--inspiring-pavlova-352cf9.netlify.app/
+
 ## Descripcion del proyecto
 
 El proyecto "Registro de Empleados" es un sistema de gestión de empleados desarrollado en Angular 13. Permite realizar operaciones clave en el registro de empleados, como agregar, editar, eliminar y cambiar el estado. Incorpora características como búsqueda, paginación y alertas visuales.
