@@ -134,17 +134,23 @@ export class MainComponent implements OnInit {
   }
 
   async borrarEmpleado(empleado: EmpleadoInterface): Promise<void> {
+    const confirmed = await this.alertService.confirmationAlert();
+    if (!confirmed) {
+      return;
+    }
+
     const response = await this.databaseService.deleteEmployee(
       this.catalogoDeEmpleados,
       empleado
     );
 
-    if (response) {
-      this.alertService.successAlert('Empleado eliminado correctamente');
-      await this.obtenerCatalogos();
-    } else {
+    if (!response) {
       this.alertService.errorAlert('Ocurrio un error');
+      return;
     }
+
+    this.alertService.successAlert('Empleado eliminado correctamente');
+    await this.obtenerCatalogos();
   }
 
   botonCancelar(): void {

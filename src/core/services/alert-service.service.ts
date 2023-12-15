@@ -5,26 +5,20 @@ import Swal from 'sweetalert2';
   providedIn: 'root',
 })
 export class AlertServiceService {
-  confirmationAlert(): void {
-    Swal.fire({
+  confirmationAlert(): Promise<boolean> {
+    return Swal.fire({
       title: '¿Deseas continuar?',
-      text: 'No podras recuperar el usuario',
+      text: 'No podrás recuperar el usuario',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Si, eliminar!',
     }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: 'Usuario eliminado!',
-          text: 'El usuario ha sido eliminado exitosamente.',
-          icon: 'success',
-        });
-      }
+      return result.isConfirmed;
     });
   }
-
+  
   successAlert(mensaje = 'Operacion ejecutada exitosamente'): void {
     Swal.fire({
       icon: 'success',
